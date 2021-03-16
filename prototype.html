@@ -12,89 +12,106 @@
 
         body {
             display: flex;
-            min-height: 100vh;
+            overflow: hidden;
+            height: 100vh;
             flex-direction: column;
             margin: 0;
+            color: #d3d9e0;
+            font-family: Courier, serif;
         }
 
         /* MENU BAR */
 
-        #menu-bar {
-            background-color: darkslategray;
+        .options-bar {
+            background-color: #263854;
             overflow: hidden;
         }
 
-        #menu-bar a {
+        .options-bar a {
             float: left;
-            color: aliceblue;
+            color: #d3d9e0;
             text-align: center;
             padding: 10px;
             text-decoration: none;
             font-size: 17px;
         }
 
-        #menu-bar a:hover {
-            background-color: #ddd;
-            color: black;
+        .options-bar a:hover {
+            background-color: #1c293e;
+        }
+
+        .tool-window {
+            background-color: #1a253b;
         }
 
         #main-container {
             display: flex;
+            overflow: hidden;
             flex: 1;
         }
 
         #file-selector {
             flex: 1;
-            background: beige;
+            max-width: 16vw;
+            overflow: auto;
         }
 
         #editor-and-tabs-container {
             display: flex;
+            overflow: hidden;
             flex: 5;
             flex-direction: column;
-            background: pink;
         }
 
         #editor-container {
             display: flex;
+            overflow: hidden;
             flex: 4;
-            background: yellow;
         }
 
         #code-field {
             flex: 4;
-            background: lightskyblue;
+            background: #151f2f;
+            overflow: auto;
         }
 
         #focus-field {
             flex: 1;
-            background: darkblue;
+            overflow: auto;
         }
 
         #tabs-container {
             display: flex;
             flex: 1;
             flex-direction: column;
-            background: crimson;
         }
 
-        #tabs-container header {
-            background-color: darkslategray;
-            overflow: hidden;
+        #tabs-container section {
+            flex: 1;
+            overflow: auto;
         }
 
-        #tabs-container a {
-            float: left;
-            color: aliceblue;
-            text-align: center;
-            padding: 10px;
-            text-decoration: none;
-            font-size: 17px;
+        /* CUSTOM SCROLLBARS /*
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
         }
 
-        #tabs-container a:hover {
-            background-color: #ddd;
-            color: black;
+        /* Track */
+        ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner {
+            background: #1d1c1c;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #454548;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
     </style>
@@ -102,7 +119,7 @@
 </head>
 <body>
 
-<header id="menu-bar">
+<header class="options-bar">
     <a href="#file">File</a>
     <a href="#edit">Edit</a>
     <a href="#view">View</a>
@@ -110,11 +127,13 @@
 </header>
 
 <div id="main-container">
-    <div id="file-selector">
+    <div id="file-selector" class="tool-window">
         <ul>
             <li>File one</li>
             <li>File two</li>
             <li>File three</li>
+            <li>Very_long_file_name_aaaaaaabbbbbb</li>
+            <li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li>
         </ul>
     </div>
 
@@ -124,28 +143,122 @@
                 <pre> <code>
                     Some example code here.
                     Not much actually.
+                    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+                    o
+
                 </code></pre>
             </div>
 
-            <aside id="focus-field">
+            <aside id="focus-field" class="tool-window">
                 <ul>
                     <li>main()</li>
                     <li>hello_world()</li>
                     <li>bool is_happy</li>
                     <li>int year = 2021</li>
+                    <li>lo00000000000000000000000000ng_function_name()</li>
+                    <li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li>
                 </ul>
             </aside>
         </div>
 
         <div id="tabs-container">
-            <header>
+            <header class="options-bar">
                 <a href="#tab1">Tab1</a>
                 <a href="#tab2">Tab2</a>
                 <a href="#tab3">Tab3</a>
                 <a href="#tab4">Tab4</a>
             </header>
-            <section>
+            <section class="tool-window">
                 Some example tab content.
+                Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong
             </section>
         </div>
     </div>
