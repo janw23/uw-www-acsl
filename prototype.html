@@ -20,8 +20,19 @@
             <li>File one</li>
             <li>File two</li>
             <li>File three</li>
-            <li>Very_long_file_name_aaaaaaabbbbbb</li>
-            <li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li>
+            <li>Lorem ipsum</li>
+            <li>dolor</li>
+            <li>sit amet</li>
+            <li>consectetur adipiscing elit</li>
+            <li>Maecenas</li>
+            <li>bibendum</li>
+            <li>turpis sit</li>
+            <li>amet massa</li>
+            <li>congue vulputate</li>
+            <li>Aenean</li>
+            <li>tortor</li>
+            <li>elit</li>
+            <li>tincidunt.</li>
         </ul>
     </div>
 
@@ -29,98 +40,130 @@
         <div id="editor-container">
             <div id="code-field">
                 <pre> <code>
-Some example code here.
-Not much actually.
-ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
-o
+has also been formally certified in Coq.
+/*@ axiomatic dirichlet_maths {
+  @
+  @ logic real c;
+  @ logic real p0(real x);
+  @ logic real psol(real x, real t);
+
+  @ axiom c_pos: 0 < c;
+
+  @ logic real psol_1(real x, real t);
+  @ axiom psol_1_def:
+  @   \forall real x; \forall real t;
+  @   \forall real eps; \exists real C; 0 < C && \forall real dx;
+  @   0 < eps ==> \abs(dx) < C ==>
+  @   \abs((psol(x + dx, t) - psol(x, t)) / dx - psol_1(x, t)) < eps;
+
+  @ logic real psol_11(real x, real t);
+  @ axiom psol_11_def:
+  @   \forall real x; \forall real t;
+  @   \forall real eps; \exists real C; 0 < C && \forall real dx;
+  @   0 < eps ==> \abs(dx) < C ==>
+  @   \abs((psol_1(x + dx, t) - psol_1(x, t)) / dx - psol_11(x, t)) < eps;
+
+  @ logic real psol_2(real x, real t);
+  @ axiom psol_2_def:
+  @   \forall real x; \forall real t;
+  @   \forall real eps; \exists real C; 0 < C && \forall real dt;
+  @   0 < eps ==> \abs(dt) < C ==>
+  @   \abs((psol(x, t + dt) - psol(x, t)) / dt - psol_2(x, t)) < eps;
+
+  @ logic real psol_22(real x, real t);
+  @ axiom psol_22_def:
+  @   \forall real x; \forall real t;
+  @   \forall real eps; \exists real C; 0 < C && \forall real dt;
+  @   0 < eps ==> \abs(dt) < C ==>
+  @   \abs((psol_2(x, t + dt) - psol_2(x, t)) / dt - psol_22(x, t)) < eps;
+
+  @ axiom wave_eq_0: \forall real x; 0 <= x <= 1 ==> psol(x, 0) == p0(x);
+  @ axiom wave_eq_1: \forall real x; 0 <= x <= 1 ==> psol_2(x, 0) == 0;
+  @ axiom wave_eq_2:
+  @   \forall real x; \forall real t;
+  @   0 <= x <= 1 ==> psol_22(x, t) - c * c * psol_11(x, t) == 0;
+  @ axiom wave_eq_dirichlet_1: \forall real t; psol(0, t) == 0;
+  @ axiom wave_eq_dirichlet_2: \forall real t; psol(1, t) == 0;
+
+  @ logic real psol_Taylor_3(real x, real t, real dx, real dt);
+  @ logic real psol_Taylor_4(real x, real t, real dx, real dt);
+
+  @ logic real alpha_3; logic real C_3;
+  @ logic real alpha_4; logic real C_4;
+
+  @ axiom psol_suff_regular_3:
+  @   0 < alpha_3 && 0 < C_3 &&
+  @   \forall real x; \forall real t; \forall real dx; \forall real dt;
+  @   0 <= x <= 1 ==> \sqrt(dx * dx + dt * dt) <= alpha_3 ==>
+  @   \abs(psol(x + dx, t + dt) - psol_Taylor_3(x, t, dx, dt)) <=
+  @     C_3 * \abs(\pow(\sqrt(dx * dx + dt * dt), 3));
+
+  @ axiom psol_suff_regular_4:
+  @   0 < alpha_4 && 0 < C_4 &&
+  @   \forall real x; \forall real t; \forall real dx; \forall real dt;
+  @   0 <= x <= 1 ==> \sqrt(dx * dx + dt * dt) <= alpha_4 ==>
+  @   \abs(psol(x + dx, t + dt) - psol_Taylor_4(x, t, dx, dt)) <=
+  @     C_4 * \abs(\pow(\sqrt(dx * dx + dt * dt), 4));
+
+  @ axiom psol_le:
+  @   \forall real x; \forall real t;
+  @   0 <= x <= 1 ==> 0 <= t ==> \abs(psol(x, t)) <= 1;
+
+  @ logic real T_max;
+  @ axiom T_max_pos: 0 < T_max;
+
+  @ logic real C_conv; logic real alpha_conv;
+  @ lemma alpha_conv_pos: 0 < alpha_conv;
+  @
+  @ } */
+
+
+/*@ axiomatic dirichlet_prog {
+  @
+  @  predicate analytic_error{L}
+  @    (double **p, integer ni, integer i, integer k, double a, double dt)
+  @    reads p[..][..];
+  @
+  @  lemma analytic_error_le{L}:
+  @    \forall double **p; \forall integer ni; \forall integer i;
+  @    \forall integer nk; \forall integer k;
+  @    \forall double a; \forall double dt;
+  @    0 < ni ==> 0 <= i <= ni ==> 0 <= k ==>
+  @    0 < \exact(dt) ==>
+  @    analytic_error(p, ni, i, k, a, dt) ==>
+  @    \sqrt(1. / (ni * ni) + \exact(dt) * \exact(dt)) < alpha_conv ==>
+  @    k <= nk ==> nk <= 7598581 ==> nk * \exact(dt) <= T_max ==>
+  @    \exact(dt) * ni * c <= 1 - 0x1.p-50 ==>
+  @    \forall integer i1; \forall integer k1;
+  @    0 <= i1 <= ni ==> 0 <= k1 < k ==>
+  @    \abs(p[i1][k1]) <= 2;
+  @
+  @  predicate separated_matrix{L}(double **p, integer leni) =
+  @    \forall integer i; \forall integer j;
+  @    0 <= i < leni ==> 0 <= j < leni ==> i != j ==>
+  @    \base_addr(p[i]) != \base_addr(p[j]);
+  @
+  @ logic real sqr_norm_dx_conv_err{L}
+  @   (double **p, real dx, real dt, integer ni, integer i, integer k)
+  @   reads p[..][..];
+  @ logic real sqr(real x) = x * x;
+  @ lemma sqr_norm_dx_conv_err_0{L}:
+  @   \forall double **p; \forall real dx; \forall real dt;
+  @   \forall integer ni; \forall integer k;
+  @   sqr_norm_dx_conv_err(p, dx, dt, ni, 0, k) == 0;
+  @ lemma sqr_norm_dx_conv_err_succ{L}:
+  @   \forall double **p; \forall real dx; \forall real dt;
+  @   \forall integer ni; \forall integer i; \forall integer k;
+  @   0 <= i ==>
+  @   sqr_norm_dx_conv_err(p, dx, dt, ni, i + 1, k) ==
+  @     sqr_norm_dx_conv_err(p, dx, dt, ni, i, k) +
+  @     dx * sqr(psol(1. * i / ni, k * dt) - \exact(p[i][k]));
+  @ logic real norm_dx_conv_err{L}
+  @   (double **p, real dt, integer ni, integer k) =
+  @   \sqrt(sqr_norm_dx_conv_err(p, 1. / ni, dt, ni, ni, k));
+  @
+  @ } */
+
                 </code></pre>
             </div>
 
@@ -130,9 +173,20 @@ o
                     <li>hello_world()</li>
                     <li>bool is_happy</li>
                     <li>int year = 2021</li>
-                    <li>lo00000000000000000000000000ng_function_name()</li>
-                    <li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li>
-                </ul>
+                    <li>Lorem ipsum</li>
+                    <li>dolor</li>
+                    <li>sit amet</li>
+                    <li>consectetur adipiscing elit</li>
+                    <li>Maecenas</li>
+                    <li>bibendum</li>
+                    <li>turpis sit</li>
+                    <li>amet massa</li>
+                    <li>congue vulputate</li>
+                    <li>Aenean</li>
+                    <li>tortor</li>
+                    <li>elit</li>
+                    <li>tincidunt.</li>
+                     </ul>
             </aside>
         </div>
 
@@ -144,8 +198,31 @@ o
                 <a href="#tab4">Tab4</a>
             </header>
             <section class="tool-window">
-                Some example tab content. <br>
-                Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong
+                Donec varius auctor fringilla. Curabitur ullamcorper tempus commodo.<br>
+                Nam ultricies odio non nunc dignissim, id scelerisque odio euismod. Suspendisse imperdiet nisi eget ex vestibulum, quis viverra lectus ultricies.<br>
+                Curabitur tincidunt dolor aliquet interdum lobortis. Donec pharetra varius feugiat. Maecenas eget ligula lacus.<br>
+                Duis eget nunc quis eros interdum vestibulum. <br>
+                Nullam varius ipsum dolor, at vulputate ipsum fringilla id. Maecenas ultricies urna quis nibh tincidunt, eu sagittis diam congue. Quisque at bibendum velit, in scelerisque nulla. <br>
+                Duis ultricies quis tellus at iaculis.
+                <br><br>
+                Duis eget nunc quis eros interdum vestibulum.<br>
+                Nullam varius ipsum dolor, at vulputate ipsum fringilla id. Maecenas ultricies urna quis nibh tincidunt, eu sagittis diam congue. Quisque at bibendum velit, in scelerisque nulla. <br>
+                Duis ultricies quis tellus at iaculis.
+                Donec varius auctor fringilla. Curabitur ullamcorper tempus commodo.<br>
+                Nam ultricies odio non nunc dignissim, id scelerisque odio euismod. Suspendisse imperdiet nisi eget ex vestibulum, quis viverra lectus ultricies.<br>
+                Curabitur tincidunt dolor aliquet interdum lobortis. Donec pharetra varius feugiat. Maecenas eget ligula lacus.<br>
+                Donec varius auctor fringilla. Curabitur ullamcorper tempus commodo.<br>
+                Nam ultricies odio non nunc dignissim, id scelerisque odio euismod. Suspendisse imperdiet nisi eget ex vestibulum, quis viverra lectus ultricies.<br>
+                Curabitur tincidunt dolor aliquet interdum lobortis. Donec pharetra varius feugiat. Maecenas eget ligula lacus.<br>
+                Duis eget nunc quis eros interdum vestibulum. Aliquam sit amet nisi quam. Donec sollicitudin lectus at urna malesuada dapibus.<br>
+                Nullam varius ipsum dolor, at vulputate ipsum fringilla id. Maecenas ultricies urna quis nibh tincidunt, eu sagittis diam congue. Quisque at bibendum velit, in scelerisque nulla. <br>
+                Duis ultricies quis tellus at iaculis.
+                Duis eget nunc quis eros interdum vestibulum. Aliquam sit amet nisi quam. Donec sollicitudin lectus at urna malesuada dapibus.<br>
+                Nullam varius ipsum dolor, at vulputate ipsum fringilla id. Maecenas ultricies urna quis nibh tincidunt, eu sagittis diam congue. Quisque at bibendum velit, in scelerisque nulla. <br>
+                Duis ultricies quis tellus at iaculis.
+                Donec varius auctor fringilla. Curabitur ullamcorper tempus commodo.<br>
+                Nam ultricies odio non nunc dignissim, id scelerisque odio euismod. Suspendisse imperdiet nisi eget ex vestibulum, quis viverra lectus ultricies.<br>
+                Curabitur tincidunt dolor aliquet interdum lobortis. Donec pharetra varius feugiat. Maecenas eget ligula lacus.<br>
             </section>
         </div>
     </div>

@@ -56,7 +56,7 @@ body {
     float: left;
     color: var(--text-color);
     text-align: center;
-    padding: 0.5em;
+    padding: 0.4em;
     text-decoration: none;
     font-size: 1em;
 }
@@ -79,6 +79,7 @@ body {
     flex: content;
     max-width: 16vw;
     overflow: auto;
+    border-right: solid 0.3em var(--scrollbar-color-track);
 }
 
 #editor-and-tabs-container {
@@ -116,6 +117,7 @@ body {
     display: flex;
     flex: 1.5;
     flex-direction: column;
+    overflow: hidden;
 }
 
 #tabs-container section {
@@ -148,7 +150,7 @@ body {
     background: var(--scrollbar-color-handle-hover);
 }
 
-@media only screen and (max-width: 75vh) {
+@media only screen and (max-width: 70vh) {
     #main-container {
         flex-direction: column-reverse;
     }
