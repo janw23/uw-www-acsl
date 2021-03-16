@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* MENU BAR */
+
+        .menu-bar {
+            background-color: darkslategray;
+            overflow: hidden;
+        }
+
+        .menu-bar a {
+            float: left;
+            color: aliceblue;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .menu-bar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .l1-flex-container {
+            display: flex;
+        }
+
+        #file-selection-field {
+            flex-grow: 1;
+            background-color: pink;
+        }
+
+        .l2-flex-container {
+            flex-grow: 5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-editor {
+            flex-grow: 4;
+            background-color: lawngreen;
+        }
+
+        .code-editor pre {
+            overflow: scroll;
+        }
+
+        #code-focus-container {
+            flex-grow: 1;
+            background-color: lightskyblue;
+        }
+
+        .l3-flex-container {
+            flex-grow: 1;
+            display: flex;
+        }
+
+        #tabs-container {
+            flex-grow: 1;
+            background-color: palevioletred;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<header class="menu-bar">
+    <a href="#file">File</a>
+    <a href="#edit">Edit</a>
+    <a href="#view">View</a>
+    <a href="#help">Help</a>
+</header>
+
+<div class="l1-flex-container">
+    <div id="file-selection-field">
+        <ul>
+            <li>File one</li>
+            <li>File two</li>
+            <li>File three</li>
+            <li>File PI</li>
+            <li>File four</li>
+        </ul>
+    </div>
+
+    <div class="l2-flex-container">
+        <div class="code-editor">
+            <div class="l3-flex-container">
+                <pre> <code>
+                    Here is the example code.
+                    It indeed is beautiful.
+
+                    And here is a very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong line.
+                    But the one above was not loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong enuf.
+                    </code> </pre>
+                <div id="code-focus-container">
+                    <!--Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc-->
+                </div>
+            </div>
+        </div>
+
+        <div id="tabs-container">
+            <p>Tabs content here</p>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
