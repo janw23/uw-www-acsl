@@ -2,129 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <title>Mockup</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            overflow: hidden;
-            height: 100vh;
-            flex-direction: column;
-            margin: 0;
-            color: #d3d9e0;
-            font-family: Courier, serif;
-        }
-
-        /* MENU BAR */
-
-        .options-bar {
-            background-color: #263854;
-            overflow: hidden;
-        }
-
-        .options-bar a {
-            float: left;
-            color: #d3d9e0;
-            text-align: center;
-            padding: 0.5em;
-            text-decoration: none;
-            font-size: 1em;
-        }
-
-        .options-bar a:hover {
-            background-color: #1c293e;
-        }
-
-        .tool-window {
-            background-color: #1a253b;
-        }
-
-        #main-container {
-            display: flex;
-            overflow: hidden;
-            flex: 1;
-        }
-
-        #file-selector {
-            flex: content;
-            max-width: 16vw;
-            overflow: auto;
-        }
-
-        #editor-and-tabs-container {
-            display: flex;
-            overflow: hidden;
-            flex: 5;
-            flex-direction: column;
-        }
-
-        #editor-container {
-            display: flex;
-            overflow: hidden;
-            flex: 4;
-        }
-
-        #code-field {
-            flex: 4;
-            background: #151f2f;
-            overflow: auto;
-            padding: 1em;
-        }
-
-        #focus-field {
-            flex: content;
-            max-width: 20vw;
-            overflow: auto;
-        }
-
-        #focus-field ul, #file-selector ul {
-            white-space: nowrap;
-            padding-right: 1em;
-        }
-
-        #tabs-container {
-            display: flex;
-            flex: 1.5;
-            flex-direction: column;
-        }
-
-        #tabs-container section {
-            flex: 1;
-            overflow: auto;
-        }
-
-        /* CUSTOM SCROLLBARS /*
-
-        /* width */
-        ::-webkit-scrollbar {
-            width: 0.25em;
-            height: 0.25em;
-        }
-
-        /* Track */
-        ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner {
-            background: #1d1c1c;
-        }
-
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #454548;
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-    </style>
-
 </head>
-<body>
+<body class="theme--jool">
 
 <header class="options-bar">
     <a href="#file">File</a>
@@ -263,7 +144,7 @@ o
                 <a href="#tab4">Tab4</a>
             </header>
             <section class="tool-window">
-                Some example tab content.
+                Some example tab content. <br>
                 Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong
             </section>
         </div>
