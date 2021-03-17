@@ -75,7 +75,6 @@ body {
 
 #file-selector {
     flex: content;
-    max-width: 16vw;
     overflow: auto;
     border-right: solid 0.3em var(--scrollbar-color-track);
 }
@@ -102,14 +101,12 @@ body {
 
 #focus-field {
     flex: content;
-    max-width: 20vw;
     overflow: auto;
 }
 
 /* Proper look of tool windows */
 #focus-field ul, #file-selector ul {
-    white-space: nowrap;
-    padding-right: 1em;
+    padding-right: 0.3em;
 }
 
 /* Tab window */
@@ -123,7 +120,6 @@ body {
 /* Tab window content field */
 #tabs-container section {
     flex: 1;
-    white-space: nowrap;
     padding: 0.3em;
     overflow: auto;
 }
@@ -152,13 +148,23 @@ body {
 }
 
 @media only screen and (max-width: 70vh) {
+
+    body, #main-container,
+    #file-selector, #editor-and-tabs-container,
+    #editor-container,
+    #focus-field, #tabs-container,
+    #tabs-container section {
+        overflow: unset;
+    }
+
     #main-container {
         flex-direction: column-reverse;
     }
 
     #file-selector {
         flex: 1;
-        max-width: none;
+        max-width: unset;
+        border-right: unset;
     }
 
     #editor-container {
@@ -170,7 +176,7 @@ body {
     }
 
     #focus-field {
-        max-width: none;
+        max-width: unset;
         flex: 1;
     }
 }
