@@ -1,3 +1,9 @@
+# Development info:
+# python manage.py makemigrations prover'
+# python manage.py sqlmigrate prover <#>  (optional)
+# python manage.py check  (optional)
+# python manage.py migrate
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -28,7 +34,7 @@ class User(models.Model):
 class Directory(models.Model):
     # todo relations
     name = models.CharField(max_length=256)  # todo more suitable type? ask someone?
-    opt_description = models.TextField('optional description')
+    opt_description = models.TextField('optional description', blank=True)
     creation_date = models.DateTimeField('date created')
     owner = None  # todo
     available = models.BooleanField()
@@ -45,7 +51,7 @@ class File(models.Model):
     # todo DRY?
     # todo Relations
     name = models.CharField(max_length=256)  # todo more suitable type? ask someone?
-    opt_description = models.TextField('optional description')
+    opt_description = models.TextField('optional description', blank=True)
     creation_date = models.DateTimeField('date created')
     owner = None  # todo
     available = models.BooleanField()
@@ -85,8 +91,8 @@ class FileSection(models.Model):
         UNCHECKED = 'UN', _('Unchecked')
 
     # todo Relations
-    opt_name = models.CharField('optional name', max_length=256)  # todo more suitable type? ask someone?
-    opt_description = models.TextField('optional description')
+    opt_name = models.CharField('optional name', max_length=256, blank=True)  # todo more suitable type? ask someone?
+    opt_description = models.TextField('optional description', blank=True)
     creation_date = models.DateTimeField('date created')
     section_category = models.CharField(max_length=4, choices=SectionCategory.choices)
     status = models.CharField(max_length=2, choices=SectionStatus.choices)
