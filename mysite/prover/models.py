@@ -7,6 +7,17 @@ from django.utils.translation import gettext_lazy as _
 # All the entities have a timestamp and a validity flag.
 # The actual model may contain more entities and each of the entities may have more properties.
 
+
+# User – is an entity that defines a user of the application.
+# a name
+# a login
+# a password
+class User(models.Model):
+    name = models.CharField(max_length=32)
+    login = models.CharField(max_length=16)
+    password = models.CharField(max_length=32)  # todo encryption in the futue?
+
+
 # Directory - is an entity that holds files and other directories.
 # In addition to descriptions of relations with other entities, it has:
 # a name,
@@ -79,7 +90,7 @@ class FileSection(models.Model):
     creation_date = models.DateTimeField('date created')
     section_category = models.CharField(max_length=4, choices=SectionCategory.choices)
     status = models.CharField(max_length=2, choices=SectionStatus.choices)
-    status_data = None  # todo
+    # status_data = None  # todo Is the current impl ok?
 
 
 # Status data - is an entity that defines data associated with the section status,
@@ -88,15 +99,10 @@ class FileSection(models.Model):
 # a user
 class StatusData(models.Model):
     # todo Should this really be a separate model?
+    file_section = models.OneToOneField(
+        FileSection,
+        on_delete=models.CASCADE,
+        related_name='parent_file_section'
+    )
     data = models.TextField()
-    user = None  # todo
-
-
-# User – is an entity that defines a user of the application.
-# a name
-# a login
-# a password
-class User(models.Model):
-    name = models.CharField(max_length=32)
-    login = models.CharField(max_length=16)
-    password = models.CharField(max_length=32)  # todo encryption in the futue>
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
