@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 # TODO Create things and refine them gradually as you learn.
 
-# All the entities have a timestamp and a validity flag.
+# All the entities have a timestamp and a validity flag. todo
 # The actual model may contain more entities and each of the entities may have more properties.
 
 
@@ -85,7 +85,7 @@ class FileSection(models.Model):
         UNCHECKED = 'UN', _('Unchecked')
 
     # todo Relations
-    opt_name = models.CharField(max_length=256)  # todo more suitable type? ask someone?
+    opt_name = models.CharField('optional name', max_length=256)  # todo more suitable type? ask someone?
     opt_description = models.TextField('optional description')
     creation_date = models.DateTimeField('date created')
     section_category = models.CharField(max_length=4, choices=SectionCategory.choices)
