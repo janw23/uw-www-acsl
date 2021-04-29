@@ -50,10 +50,10 @@ class Directory(models.Model):
 class File(models.Model):
     # todo DRY?
     # todo Relations
-    file_field = models.FileField(upload_to='uploads/', blank=True)  # todo change this dir to user-specific?
-    name = models.CharField(max_length=256)  # todo more suitable type? ask someone?
+    file_data = models.FileField(upload_to='uploads/', blank=True)  # todo change this dir to user-specific?
+    name = models.CharField(max_length=256, blank=True)  # todo more suitable type? ask someone? And remove blank
     opt_description = models.TextField('optional description', blank=True)
-    creation_date = models.DateTimeField('date created')
+    creation_date = models.DateTimeField('date created', auto_now=True)
     owner = None  # todo
     available = models.BooleanField()
     # todo parent_dir ???

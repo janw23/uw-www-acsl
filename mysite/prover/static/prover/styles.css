@@ -1,1 +1,225 @@
-*{box-sizing:border-box}.theme--dark-blue{--text-color:#d3d9e0;--options-bar-color:#263854;--options-bar-color-hover:#1c293e;--tool-window-color:#1a253b;--code-window-color:#151f2f;--scrollbar-color-track:#1d1c1c;--scrollbar-color-handle:#454548;--scrollbar-color-handle-hover:#555}.theme--purple{--text-color:#ffeb98;--options-bar-color:#671551;--options-bar-color-hover:#531141;--tool-window-color:#450f33;--code-window-color:#300b24;--scrollbar-color-track:#400d30;--scrollbar-color-handle:#6b1551;--scrollbar-color-handle-hover:#8a1b68}.theme--jool{--text-color:#f9efff;--options-bar-color:#5b7207;--options-bar-color-hover:#445408;--tool-window-color:#33470f;--code-window-color:#1e290b;--scrollbar-color-track:#283202;--scrollbar-color-handle:#5e7307;--scrollbar-color-handle-hover:#718d0a}body{display:flex;overflow:hidden;height:100vh;flex-direction:column;margin:0;color:var(--text-color);font-family:Courier,serif}.options-bar{background-color:var(--options-bar-color);overflow:hidden}.options-bar a{float:left;color:var(--text-color);text-align:center;padding:.4em;text-decoration:none;font-size:1em}.options-bar a:hover{background-color:var(--options-bar-color-hover)}.tool-window{background-color:var(--tool-window-color)}#main-container{display:flex;overflow:hidden;flex:1}#file-selector{flex:content;overflow:auto;border-right:solid .3em var(--scrollbar-color-track)}#editor-and-tabs-container{display:flex;overflow:hidden;flex:5;flex-direction:column}#editor-container{display:flex;overflow:hidden;flex:4}#code-field{flex:4;background:var(--code-window-color);overflow:auto;padding:.5em}#focus-field{flex:content;overflow:auto}#file-selector ul,#focus-field ul{padding-right:.3em}#tabs-container{display:flex;flex:1.5;flex-direction:column;overflow:hidden}#tabs-container section{flex:1;padding:.3em;overflow:auto}::-webkit-scrollbar{width:.25em;height:.25em}::-webkit-scrollbar-corner,::-webkit-scrollbar-track{background:var(--scrollbar-color-track)}::-webkit-scrollbar-thumb{background:var(--scrollbar-color-handle)}::-webkit-scrollbar-thumb:hover{background:var(--scrollbar-color-handle-hover)}@media only screen and (max-width:70vh){#editor-and-tabs-container,#editor-container,#file-selector,#focus-field,#main-container,#tabs-container,#tabs-container section,body{overflow:unset}#main-container{flex-direction:column-reverse}#file-selector{flex:1;max-width:unset;border-right:unset}#editor-container{flex-direction:column}#code-field{flex:3}#focus-field{max-width:unset;flex:1}}
+* {
+    box-sizing: border-box;
+}
+
+.theme--dark-blue {
+    --text-color: #d3d9e0;
+    --options-bar-color: #263854;
+    --options-bar-color-hover: #1c293e;
+    --tool-window-color: #1a253b;
+    --code-window-color: #151f2f;
+    --scrollbar-color-track: #1d1c1c;
+    --scrollbar-color-handle: #454548;
+    --scrollbar-color-handle-hover: #555;
+}
+
+.theme--purple {
+    --text-color: #ffeb98;
+    --options-bar-color: #671551;
+    --options-bar-color-hover: #531141;
+    --tool-window-color: #450f33;
+    --code-window-color: #300b24;
+    --scrollbar-color-track: #400d30;
+    --scrollbar-color-handle: #6b1551;
+    --scrollbar-color-handle-hover: #8a1b68;
+}
+
+.theme--jool {
+    --text-color: #f9efff;
+    --options-bar-color: #5b7207;
+    --options-bar-color-hover: #445408;
+    --tool-window-color: #33470f;
+    --code-window-color: #1e290b;
+    --scrollbar-color-track: #283202;
+    --scrollbar-color-handle: #5e7307;
+    --scrollbar-color-handle-hover: #718d0a;
+}
+
+body {
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
+    flex-direction: column;
+    margin: 0;
+    color: var(--text-color);
+    font-family: Courier, serif;
+}
+
+.options-bar {
+    background-color: var(--options-bar-color);
+    overflow: hidden;
+}
+
+.options-bar a {
+    float: left;
+    color: var(--text-color);
+    text-align: center;
+    padding: 0.4em;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.options-bar a:hover {
+    background-color: var(--options-bar-color-hover);
+}
+
+/* The dropdown container */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.tool-window {
+    background-color: var(--tool-window-color);
+}
+
+#main-container {
+    display: flex;
+    overflow: hidden;
+    flex: 1;
+}
+
+#file-selector {
+    flex: content;
+    overflow: auto;
+    border-right: solid 0.3em var(--scrollbar-color-track);
+}
+
+#editor-and-tabs-container {
+    display: flex;
+    overflow: hidden;
+    flex: 5;
+    flex-direction: column;
+}
+
+#editor-container {
+    display: flex;
+    overflow: hidden;
+    flex: 4;
+}
+
+#code-field {
+    flex: 4;
+    background: var(--code-window-color);
+    overflow: auto;
+    padding: 0.5em;
+}
+
+#focus-field {
+    flex: content;
+    overflow: auto;
+}
+
+/* Proper look of tool windows */
+#focus-field ul, #file-selector ul {
+    padding-right: 0.3em;
+}
+
+/* Tab window */
+#tabs-container {
+    display: flex;
+    flex: 1.5;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Tab window content field */
+#tabs-container section {
+    flex: 1;
+    padding: 0.3em;
+    overflow: auto;
+}
+
+/* CUSTOM SCROLLBARS */
+
+/* Size */
+::-webkit-scrollbar {
+    width: 0.25em;
+    height: 0.25em;
+}
+
+/* Track */
+::-webkit-scrollbar-track, ::-webkit-scrollbar-corner {
+    background: var(--scrollbar-color-track);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-color-handle);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-color-handle-hover);
+}
+
+@media only screen and (max-width: 70vh) {
+
+    body, #main-container,
+    #file-selector, #editor-and-tabs-container,
+    #editor-container,
+    #focus-field, #tabs-container,
+    #tabs-container section {
+        overflow: unset;
+    }
+
+    #main-container {
+        flex-direction: column-reverse;
+    }
+
+    #file-selector {
+        flex: 1;
+        max-width: unset;
+        border-right: unset;
+    }
+
+    #editor-container {
+        flex-direction: column;
+    }
+
+    #code-field {
+        flex: 3;
+    }
+
+    #focus-field {
+        max-width: unset;
+        flex: 1;
+    }
+}

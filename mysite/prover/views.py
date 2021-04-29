@@ -1,24 +1,24 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage  # todo rt
+from django.shortcuts import render, redirect
 
-from .forms import UploadFileForm
+from django.shortcuts import reverse
+
+from .forms import FileUploadForm
 from .models import File
 
 
 def index(request):
-    template = loader.get_template('prover/index.html')
-    return HttpResponse(template.render(None, request))
+    return render(request, 'prover/index.html', None)
 
 
 def upload_file(request):
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            instance = File(file_field=request.FILES['file'])
-            instance.save()
-            return HttpResponseRedirect('/success/url/')
+            form.save()
+            return redirect('index')
     else:
-        form = UploadFileForm()
-    return render(request, 'upload.html', {'form': form})
+        form = FileUploadForm()
+    return render(request, 'prover/upload.html', {'form': form})
