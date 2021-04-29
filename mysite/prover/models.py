@@ -50,7 +50,7 @@ class Directory(models.Model):
 class File(models.Model):
     # todo DRY?
     # todo Relations
-    file_field = models.FileField(upload_to='uploads/')  # todo change this dir to user-specific?
+    file_field = models.FileField(upload_to='uploads/', blank=True)  # todo change this dir to user-specific?
     name = models.CharField(max_length=256)  # todo more suitable type? ask someone?
     opt_description = models.TextField('optional description', blank=True)
     creation_date = models.DateTimeField('date created')
