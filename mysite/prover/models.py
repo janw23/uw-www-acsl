@@ -4,6 +4,8 @@
 # python manage.py check  (optional)
 # python manage.py migrate
 
+import pathlib
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -37,7 +39,7 @@ class Directory(models.Model):
     opt_description = models.TextField('optional description', blank=True)
     creation_date = models.DateTimeField('date created')
     owner = None  # todo
-    available = models.BooleanField()
+    available = models.BooleanField(default=True)
 
 
 # File - is an entity that contains a source code, the source code is divided into sections.
@@ -50,13 +52,19 @@ class Directory(models.Model):
 class File(models.Model):
     # todo DRY?
     # todo Relations
-    file_data = models.FileField(upload_to='uploads/', blank=True)  # todo change this dir to user-specific?
-    name = models.CharField(max_length=256, blank=True)  # todo more suitable type? ask someone? And remove blank
-    opt_description = models.TextField('optional description', blank=True)
+    file_data = models.FileField(upload_to='uploads/')  # todo change this dir to user-specific?
+    parent_dir = models.ForeignKey(Directory, on_delete=models.CASCADE)
+    opt_description = models.CharField('optional description', max_length=256, blank=True)
     creation_date = models.DateTimeField('date created', auto_now=True)
     owner = None  # todo
-    available = models.BooleanField()
-    # todo parent_dir ???
+    available = models.BooleanField(default=True)
+
+    @property
+    def name(self):
+        return pathlib.Path(self.file_data.name).name  # todo Something more efficient?
+
+    def __str__(self):
+        return self.name
 
 
 # File section - is an entity that contains a meaningful piece of code within a file or comments;
@@ -87,14 +95,15 @@ class FileSection(models.Model):
     # example status' are: proved, invalid, counterexample, unchecked.
     class SectionStatus(models.TextChoices):
         # todo Is this a proper way to implement this entity?
+        # todo I can just provide a tuple and use choices as kwarg. Same with the above
         PROVED = 'PR', _('Proved')
         INVALID = 'IN', _('Invalid')
         COUNTEREXAMPLE = 'CO', _('Counterexample')
         UNCHECKED = 'UN', _('Unchecked')
 
     # todo Relations
-    opt_name = models.CharField('optional name', max_length=256, blank=True)  # todo more suitable type? ask someone?
-    opt_description = models.TextField('optional description', blank=True)
+    opt_name = models.CharField('optional name', max_length=256, blank=True)
+    opt_description = models.CharField('optional description', max_length=256, blank=True)
     creation_date = models.DateTimeField('date created')
     section_category = models.CharField(max_length=4, choices=SectionCategory.choices)
     status = models.CharField(max_length=2, choices=SectionStatus.choices)

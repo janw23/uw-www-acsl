@@ -8,12 +8,9 @@
 <!-- Upload form. Note enctype attribute! -->
 <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>{{ form.non_field_errors }}</p>
-    <p>{{ form.file_data.label_tag }} {{ form.file_data.help_text }}</p>
-    <p>
-        {{ form.file_data.errors }}
-        {{ form.file_data }}
-    </p>
+    {% for element in form %}
+    <p>{{ element.label_tag }} {{ element }}</p>
+    {% endfor %}
     <p><input type="submit" name="uploaded_file" value="Upload"/></p>
 </form>
 </body>
