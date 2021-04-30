@@ -1,0 +1,11 @@
+{% for elem in directory_structure %}
+    {% if elem == '#in#' %}
+        <ul>
+    {% endif %}
+    {% if elem == '#out#' %}
+        </ul>
+    {% endif %}
+    {% if elem != '#in#' and elem != '#out#' %}
+        <li>{{ elem }}</li>
+    {% endif %}
+{% endfor %}

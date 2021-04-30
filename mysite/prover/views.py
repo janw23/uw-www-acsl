@@ -7,10 +7,12 @@ from django.shortcuts import reverse
 
 from .forms import FileUploadForm
 from .models import File
+from .models import Directory
 
 
 def index(request):
-    return render(request, 'prover/index.html', None)
+    context = {'directory_structure': Directory.get_entire_structure()}
+    return render(request, 'prover/index.html', context)
 
 
 def upload_file(request):

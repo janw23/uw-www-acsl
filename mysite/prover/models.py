@@ -36,10 +36,36 @@ class User(models.Model):
 class Directory(models.Model):
     # todo relations
     name = models.CharField(max_length=256)  # todo more suitable type? ask someone?
+    opt_parent_dir = models.ForeignKey(
+        to='Directory', on_delete=models.CASCADE,
+        blank=True, null=True)
     opt_description = models.TextField('optional description', blank=True)
     creation_date = models.DateTimeField('date created')
     owner = None  # todo
     available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_directory_structure(self):
+        dirs_set = Directory.objects.filter(opt_parent_dir=self.id)
+        files_set = File.objects.filter(parent_dir=self.id)
+
+        files = [f.name for f in files_set]
+        dirs = [e for d in dirs_set for e in d.get_directory_structure()]  # unpack nested lists
+
+        structure = [self.name]
+        if len(files) > 0:
+            structure += ['#in#'] + files + ['#out#']
+        if len(dirs) > 0:
+            structure += ['#in#'] + dirs + ['#out#']
+
+        return structure
+
+    @staticmethod
+    def get_entire_structure():
+        parentless = Directory.objects.filter(opt_parent_dir__isnull=True)
+        return [e for d in parentless for e in d.get_directory_structure()]  # unpack nested lists
 
 
 # File - is an entity that contains a source code, the source code is divided into sections.
