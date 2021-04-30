@@ -5,15 +5,26 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{%  static 'prover/styles.css' %}">
-    <title>Mockup</title>
+    <title>Prover</title>
 </head>
 <body class="theme--jool">
 
 <header class="options-bar">
-    <a href="upload">Upload</a>
-    <a href="#edit">Edit</a>
-    <a href="#view">View</a>
-    <a href="#help">Help</a>
+    <div class="dropdown">
+        <button>File</button>
+        <div class="content">
+            <a href="upload">Upload</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button>Edit</button>
+    </div>
+    <div class="dropdown">
+        <button>View</button>
+    </div>
+    <div class="dropdown">
+        <button>Help</button>
+    </div>
 </header>
 
 <div id="main-container">
