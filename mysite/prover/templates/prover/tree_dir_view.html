@@ -1,11 +1,11 @@
 {% for elem in directory_structure %}
     {% if elem == '#in#' %}
         <ul>
-    {% endif %}
-    {% if elem == '#out#' %}
+    {% elif elem == '#out#' %}
         </ul>
-    {% endif %}
-    {% if elem != '#in#' and elem != '#out#' %}
-        <li>{{ elem }}</li>
+    {% elif elem.classname == 'File' %}
+        <li><a href="/prover/{{ elem.file_data.name }}">{{ elem.name }}</a></li>
+    {% else %}
+        <li>{{ elem.name }}</li>
     {% endif %}
 {% endfor %}

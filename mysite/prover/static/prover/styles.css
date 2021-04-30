@@ -94,6 +94,11 @@ body {
     background-color: var(--tool-window-color);
 }
 
+.tool-window a:link {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
 #main-container {
     display: flex;
     overflow: hidden;
@@ -127,7 +132,10 @@ body {
 }
 
 #focus-field {
-    flex: content;
+    display: flex;
+    flex-shrink: 0;
+    max-width: 65%;
+    flex-direction: column;
     overflow: auto;
 }
 

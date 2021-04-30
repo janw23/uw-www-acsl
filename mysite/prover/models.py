@@ -23,7 +23,7 @@ from django.utils.translation import gettext_lazy as _
 class User(models.Model):
     name = models.CharField(max_length=32)
     login = models.CharField(max_length=16)
-    password = models.CharField(max_length=32)  # todo encryption in the futue?
+    password = models.CharField(max_length=32)  # todo encryption in the future?
 
 
 # Directory - is an entity that holds files and other directories.
@@ -34,27 +34,34 @@ class User(models.Model):
 # an owner
 # an availability flag (false if the directory was deleted)
 class Directory(models.Model):
-    # todo relations
-    name = models.CharField(max_length=256)  # todo more suitable type? ask someone?
+    name = models.CharField(max_length=256)
     opt_parent_dir = models.ForeignKey(
+        verbose_name='Parent dir',
         to='Directory', on_delete=models.CASCADE,
         blank=True, null=True)
-    opt_description = models.TextField('optional description', blank=True)
-    creation_date = models.DateTimeField('date created')
+    opt_description = models.CharField('optional description', max_length=256, blank=True)
+    creation_date = models.DateTimeField('date created', auto_now=True)
     owner = None  # todo
     available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
+    @property
+    def classname(self):
+        return self.__class__.__name__
+
+    def _get_dependent_dirs_and_files(self):
+        dirs = Directory.objects.filter(opt_parent_dir=self.id, available=True)
+        files = File.objects.filter(parent_dir=self.id, available=True)
+        return dirs, files
+
     def get_directory_structure(self):
-        dirs_set = Directory.objects.filter(opt_parent_dir=self.id)
-        files_set = File.objects.filter(parent_dir=self.id)
+        dirs_set, files_set = self._get_dependent_dirs_and_files()
 
-        files = [f.name for f in files_set]
+        files = [f for f in files_set]
         dirs = [e for d in dirs_set for e in d.get_directory_structure()]  # unpack nested lists
-
-        structure = [self.name]
+        structure = [self]
         if len(files) > 0:
             structure += ['#in#'] + files + ['#out#']
         if len(dirs) > 0:
@@ -64,8 +71,20 @@ class Directory(models.Model):
 
     @staticmethod
     def get_entire_structure():
-        parentless = Directory.objects.filter(opt_parent_dir__isnull=True)
+        parentless = Directory.objects.filter(opt_parent_dir__isnull=True, available=True)
         return [e for d in parentless for e in d.get_directory_structure()]  # unpack nested lists
+
+    # marks this and depended objects as not available
+    def disable(self):
+        dirs_set, files_set = self._get_dependent_dirs_and_files()
+
+        for d in dirs_set:
+            d.disable()
+        for f in files_set:
+            f.disable()
+
+        self.available = False
+        self.save(update_fields=['available'])  # todo Is this tokay?
 
 
 # File - is an entity that contains a source code, the source code is divided into sections.
@@ -77,7 +96,6 @@ class Directory(models.Model):
 # an availability flag (false if the file was deleted)
 class File(models.Model):
     # todo DRY?
-    # todo Relations
     file_data = models.FileField(upload_to='uploads/')  # todo change this dir to user-specific?
     parent_dir = models.ForeignKey(Directory, on_delete=models.CASCADE)
     opt_description = models.CharField('optional description', max_length=256, blank=True)
@@ -89,8 +107,16 @@ class File(models.Model):
     def name(self):
         return pathlib.Path(self.file_data.name).name  # todo Something more efficient?
 
+    @property
+    def classname(self):
+        return self.__class__.__name__
+
     def __str__(self):
         return self.name
+
+    def disable(self):
+        self.available = False
+        self.save(update_fields=['available'])  # todo Is this the proper way?
 
 
 # File section - is an entity that contains a meaningful piece of code within a file or comments;

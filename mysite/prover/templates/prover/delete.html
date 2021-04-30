@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Prover - delete</title>
+</head>
+<body>
+<form action="{{ request.path }}" method="post">
+    {% csrf_token %}
+    {% for element in form %}
+    <p>{{ element.label_tag }} {{ element }}</p>
+    {% endfor %}
+    <p><input type="submit" value="Delete"/></p>
+</form>
+<p>
+    {% include 'prover/tree_dir_view.html' %}
+</p>
+</body>
+</html>

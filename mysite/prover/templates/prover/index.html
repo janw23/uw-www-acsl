@@ -13,11 +13,16 @@
     <div class="dropdown">
         <button>File</button>
         <div class="content">
-            <a href="upload">Upload</a>
+            <a href="/prover/file-upload">Upload</a>
+            <a href="/prover/file-delete">Delete</a>
         </div>
     </div>
     <div class="dropdown">
-        <button>Edit</button>
+        <button>Dir</button>
+        <div class="content">
+            <a href="/prover/dir-add">Add</a>
+            <a href="/prover/dir-delete">Delete</a>
+        </div>
     </div>
     <div class="dropdown">
         <button>View</button>
@@ -165,25 +170,7 @@ has also been formally certified in Coq.
             </div>
 
             <aside id="focus-field" class="tool-window">
-                <ul>
-                    <li>main()</li>
-                    <li>hello_world()</li>
-                    <li>bool is_happy</li>
-                    <li>int year = 2021</li>
-                    <li>Lorem ipsum</li>
-                    <li>dolor</li>
-                    <li>sit amet</li>
-                    <li>consectetur adipiscing elit</li>
-                    <li>Maecenas</li>
-                    <li>bibendum</li>
-                    <li>turpis sit</li>
-                    <li>amet massa</li>
-                    <li>congue vulputate</li>
-                    <li>Aenean</li>
-                    <li>tortor</li>
-                    <li>elit</li>
-                    <li>tincidunt.</li>
-                     </ul>
+                {% include 'prover/focus.html' %}
             </aside>
         </div>
 
