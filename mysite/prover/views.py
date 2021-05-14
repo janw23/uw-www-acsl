@@ -9,20 +9,24 @@ from .models import Directory
 from .frama import frama_focus_window_command
 
 
-def index(request, frama_target=None):
-    if frama_target:
+def _get_focus_window_content(target_file=None):
+    if target_file:
         try:
             # todo Don't allow on not available files
             frama_stdout, _ = frama_focus_window_command(
-                settings.MEDIA_ROOT / 'uploads' / frama_target)
+                settings.MEDIA_ROOT / 'uploads' / target_file)
         except Exception as e:
             frama_stdout = type(e).__name__
     else:
         frama_stdout = ['You need to select a file first!']
 
+    return frama_stdout
+
+
+def index(request, frama_target=None):
     context = {
         'directory_structure': Directory.get_entire_structure(),
-        'focus_content': frama_stdout,
+        'focus_content': _get_focus_window_content(frama_target),
     }
     return render(request, 'prover/index.html', context)
 
@@ -44,7 +48,9 @@ def add_directory(request):
     if request.method == 'POST':
         form = DirectoryAddForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_dir = form.save(commit=False)
+            new_dir.opt_parent_dir = form.cleaned_data['opt_parent_dir']
+            new_dir.save()
             return redirect('index')
     else:
         form = DirectoryAddForm()
