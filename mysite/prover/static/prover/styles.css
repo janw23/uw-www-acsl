@@ -111,6 +111,10 @@ body {
     border-right: solid 0.3em var(--scrollbar-color-track);
 }
 
+#file-selector a:visited {
+    color: var(--text-color);
+}
+
 #editor-and-tabs-container {
     display: flex;
     overflow: hidden;
