@@ -5,7 +5,7 @@ Checklist:
 - PART Entities related to sections
 
 - DONE Content of the File selection dialog
-- PART Directory and file navigation, adding, deleting
+- DONE Directory and file navigation, adding, deleting
 - TODO Parsing of the file into sections
 - PART Content of the Focus on program elements
 - TODO Proper handling of prover choice
