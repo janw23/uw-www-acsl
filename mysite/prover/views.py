@@ -4,7 +4,7 @@ from django.conf import settings
 
 from .forms import DirectoryAddForm, DirectoryDeleteForm
 from .forms import FileUploadForm, FileDeleteForm
-from .models import Directory
+from .models import Directory, FileSection
 
 from . import frama
 
@@ -19,11 +19,9 @@ def _get_full_path(frama_target):
 def _get_focus_window_content(target_file):
     if target_file:
         # todo Don't allow on not available files
-        frama_stdout, _ = frama.wp_print(target_file)
+        return FileSection.parse_from_frama_output(frama.wp_print(target_file))
     else:
-        frama_stdout = ['You need to select a file first!']
-
-    return frama_stdout
+        return 'You need to select a file first!'
 
 
 def _get_editor_window_content(target_file):
@@ -38,7 +36,7 @@ def index(request, frama_target=None):
     target_file = _get_full_path(frama_target)
     context = {
         'directory_structure': Directory.get_entire_structure(),
-        'focus_content': ['Temporary content'],  # _get_focus_window_content(target_file),
+        'focus_content': _get_focus_window_content(target_file),
         'editor_content': _get_editor_window_content(target_file),
     }
     return render(request, 'prover/index.html', context)

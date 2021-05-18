@@ -5,6 +5,7 @@
 # python manage.py migrate
 
 import pathlib
+import re
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -153,25 +154,48 @@ class FileSection(models.Model):
         COUNTEREXAMPLE = 'CO', _('Counterexample')
         UNCHECKED = 'UN', _('Unchecked')
 
-    # todo Relations
+    # Status data - is an entity that defines data associated with the section status,
+    # e.g. the counterexample content, the name of the solver that proved validity (e.g. Z3, CVC4 etc.).
+    # a status data field
+    # a user
+    class StatusData(models.Model):
+        prover_name = models.CharField(max_length=32, blank=True)
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     opt_name = models.CharField('optional name', max_length=256, blank=True)
     opt_description = models.CharField('optional description', max_length=256, blank=True)
     creation_date = models.DateTimeField('date created')
     section_category = models.CharField(max_length=4, choices=SectionCategory.choices)
+    lines = None
     status = models.CharField(max_length=2, choices=SectionStatus.choices)
-    # status_data = None  # todo Is the current impl ok?
+    status_data = StatusData()  # todo Is the current impl ok?
 
+    @staticmethod
+    def _first_occurrence_index(pattern, lines):
+        for index, line in enumerate(lines):
+            if re.match(pattern, line):
+                return index
+        return len(lines)
 
-# Status data - is an entity that defines data associated with the section status,
-# e.g. the counterexample content, the name of the solver that proved validity (e.g. Z3, CVC4 etc.).
-# a status data field
-# a user
-class StatusData(models.Model):
-    # todo Should this really be a separate model?
-    file_section = models.OneToOneField(
-        FileSection,
-        on_delete=models.CASCADE,
-        related_name='parent_file_section'
-    )
-    data = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Pomysł: Parsuję ("tnę") wyjście z framy w sekcje zapisując w nich surowy tekst
+    # oraz wyciągnięte dane, a następnie używam tych informacji do wyświetlenia sparsowanych
+    # rezultatów.
+
+    @staticmethod
+    def _parse_remaining(remaining_lines):
+        return []
+
+    @staticmethod
+    def parse_from_frama_output(frama_output):
+        # sekcja-rodzic to dane od początku wyjścia do pierwszej podsekcji albo końca pliku
+        lines = frama_output.split('\n')
+        index = FileSection._first_occurrence_index('^-+$', lines)
+
+        overview_lines = lines[:index]
+        remaining_lines = lines[index:]
+
+        overview_section = FileSection()
+        overview_section.section_category = FileSection.SectionCategory.PROCEDURE
+        overview_section.lines = overview_lines
+        return overview_section, FileSection._parse_remaining(remaining_lines)
+        # todo Zwraca (sekcja, lista dzieci, która tej samej postaci)

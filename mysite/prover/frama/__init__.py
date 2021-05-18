@@ -15,4 +15,4 @@ def wp_print(fp):
     _print_warning('Frama runs on students via SSH')
     result = run(f'{wp_print_script} {fp}',
                  capture_output=True, text=True, shell=True)
-    return result.stdout.split('\n'), result.stderr.split('\n')
+    return result.stdout
