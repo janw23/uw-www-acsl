@@ -9,21 +9,37 @@ from .models import Directory
 from . import frama
 
 
-def _get_focus_window_content(target_file=None):
+def _get_full_path(frama_target):
+    if frama_target:
+        return settings.MEDIA_ROOT / 'uploads' / frama_target
+    else:
+        return None
+
+
+def _get_focus_window_content(target_file):
     if target_file:
         # todo Don't allow on not available files
-        frama_stdout, _ = frama.wp_print(
-            settings.MEDIA_ROOT / 'uploads' / target_file)
+        frama_stdout, _ = frama.wp_print(target_file)
     else:
         frama_stdout = ['You need to select a file first!']
 
     return frama_stdout
 
 
+def _get_editor_window_content(target_file):
+    if not target_file:
+        return ['']
+    with open(target_file, 'r') as f:
+        lines = f.readlines()
+    return [line.strip('\n') for line in lines]
+
+
 def index(request, frama_target=None):
+    target_file = _get_full_path(frama_target)
     context = {
         'directory_structure': Directory.get_entire_structure(),
-        'focus_content': _get_focus_window_content(frama_target),
+        'focus_content': ['Temporary content'],  # _get_focus_window_content(target_file),
+        'editor_content': _get_editor_window_content(target_file),
     }
     return render(request, 'prover/index.html', context)
 
