@@ -6,17 +6,14 @@ from .forms import DirectoryAddForm, DirectoryDeleteForm
 from .forms import FileUploadForm, FileDeleteForm
 from .models import Directory
 
-from .frama import frama_focus_window_command
+from . import frama
 
 
 def _get_focus_window_content(target_file=None):
     if target_file:
-        try:
-            # todo Don't allow on not available files
-            frama_stdout, _ = frama_focus_window_command(
-                settings.MEDIA_ROOT / 'uploads' / target_file)
-        except Exception as e:
-            frama_stdout = type(e).__name__
+        # todo Don't allow on not available files
+        frama_stdout, _ = frama.wp_print(
+            settings.MEDIA_ROOT / 'uploads' / target_file)
     else:
         frama_stdout = ['You need to select a file first!']
 
