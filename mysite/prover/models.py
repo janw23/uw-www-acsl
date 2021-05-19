@@ -193,7 +193,6 @@ class FileSection(models.Model):
     def _parse_procedure_subsection(combined):
         match = re.match(R'.*Prover (.*) returns (.*?)(( .*)|$)', combined, re.DOTALL)
         status = match.group(2) if match else None
-        print(status)
         return FileSection.Range(combined.split('\n'), status)
 
     @staticmethod

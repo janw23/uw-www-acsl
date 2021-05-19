@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 from .forms import DirectoryAddForm, DirectoryDeleteForm
 from .forms import FileUploadForm, FileDeleteForm
@@ -32,6 +33,7 @@ def _get_editor_window_content(target_file):
     return [line.strip('\n') for line in lines]
 
 
+@login_required
 def index(request, frama_target=None):
     target_file = _get_full_path(frama_target)
     context = {
@@ -42,6 +44,7 @@ def index(request, frama_target=None):
     return render(request, 'prover/index.html', context)
 
 
+@login_required
 def upload_file(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
@@ -55,6 +58,7 @@ def upload_file(request):
     return render(request, 'prover/file_upload.html', {'form': form})
 
 
+@login_required
 def add_directory(request):
     if request.method == 'POST':
         form = DirectoryAddForm(request.POST)
@@ -68,6 +72,7 @@ def add_directory(request):
     return render(request, 'prover/dir_add.html', {'form': form})
 
 
+@login_required
 def delete_dir_or_file(target_type, request):
     form_classes = {
         'file': FileDeleteForm,
