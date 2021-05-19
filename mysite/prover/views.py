@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
+from django import forms
 
 from .forms import DirectoryAddForm, DirectoryDeleteForm
 from .forms import FileUploadForm, FileDeleteForm
-from .models import Directory, FileSection
+from .models import Directory, FileSection, File
 
 from . import frama
 
@@ -34,10 +36,16 @@ def _get_editor_window_content(target_file):
 
 
 @login_required
-def index(request, frama_target=None):
-    target_file = _get_full_path(frama_target)
+def index(request, frama_target_pk=None):
+    if frama_target_pk:
+        frama_target = File.objects.get(pk=frama_target_pk)
+        if not frama_target.available or not frama_target.owner == request.user:
+            return HttpResponseBadRequest()
+
+    target_file = _get_full_path(frama_target.name) if frama_target_pk else None
+
     context = {
-        'directory_structure': Directory.get_entire_structure(),
+        'directory_structure': Directory.get_entire_structure(request.user),
         'focus_content': _get_focus_window_content(target_file),
         'editor_content': _get_editor_window_content(target_file),
     }
@@ -47,47 +55,49 @@ def index(request, frama_target=None):
 @login_required
 def upload_file(request):
     if request.method == 'POST':
-        form = FileUploadForm(request.POST, request.FILES)
+        form = FileUploadForm(request.user, request.POST, request.FILES)
         if form.is_valid():
             new_file = form.save(commit=False)
             new_file.parent_dir = form.cleaned_data['parent_dir']
+            new_file.owner = request.user
             new_file.save()
             return redirect('index')
     else:
-        form = FileUploadForm()
+        form = FileUploadForm(request.user)
     return render(request, 'prover/file_upload.html', {'form': form})
 
 
 @login_required
 def add_directory(request):
     if request.method == 'POST':
-        form = DirectoryAddForm(request.POST)
+        form = DirectoryAddForm(request.user, request.POST)
         if form.is_valid():
             new_dir = form.save(commit=False)
             new_dir.opt_parent_dir = form.cleaned_data['opt_parent_dir']
+            new_dir.owner = request.user
             new_dir.save()
             return redirect('index')
     else:
-        form = DirectoryAddForm()
+        form = DirectoryAddForm(request.user)
     return render(request, 'prover/dir_add.html', {'form': form})
 
 
 @login_required
-def delete_dir_or_file(target_type, request):
+def delete_dir_or_file(request):
     form_classes = {
-        'file': FileDeleteForm,
-        'dir': DirectoryDeleteForm
+        '/prover/file-delete': FileDeleteForm,
+        '/prover/dir-delete': DirectoryDeleteForm
     }
-    assert target_type in form_classes.keys()
+    assert request.path in form_classes.keys()
 
     if request.method == 'POST':
-        form = form_classes[target_type](request.POST)
+        form = form_classes[request.path](request.user, request.POST)
         if form.is_valid():
             form.cleaned_data['target'].disable()
             return redirect('index')
     else:
-        form = form_classes[target_type]()
+        form = form_classes[request.path](request.user)
 
-    context = {'directory_structure': Directory.get_entire_structure(),
+    context = {'directory_structure': Directory.get_entire_structure(request.user),
                'form': form}
     return render(request, 'prover/delete.html', context)

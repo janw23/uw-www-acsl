@@ -9,23 +9,13 @@ import re
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import models as auth_models
 
 
 # TODO Create things and refine them gradually as you learn.
 
 # All the entities have a timestamp and a validity flag. todo
 # The actual model may contain more entities and each of the entities may have more properties.
-
-
-# User – is an entity that defines a user of the application.
-# a name
-# a login
-# a password
-class User(models.Model):
-    name = models.CharField(max_length=32)
-    login = models.CharField(max_length=16)
-    password = models.CharField(max_length=32)  # todo encryption in the future?
-
 
 # Directory - is an entity that holds files and other directories.
 # In addition to descriptions of relations with other entities, it has:
@@ -42,7 +32,7 @@ class Directory(models.Model):
         blank=True, null=True)
     opt_description = models.CharField('optional description', max_length=256, blank=True)
     creation_date = models.DateTimeField('date created', auto_now=True)
-    owner = None  # todo
+    owner = models.ForeignKey(auth_models.User, on_delete=models.RESTRICT)
     available = models.BooleanField(default=True)
 
     def __str__(self):
@@ -52,16 +42,21 @@ class Directory(models.Model):
     def classname(self):
         return self.__class__.__name__
 
-    def _get_dependent_dirs_and_files(self):
-        dirs = Directory.objects.filter(opt_parent_dir=self.id, available=True)
-        files = File.objects.filter(parent_dir=self.id, available=True)
+    def _get_dependent_dirs_and_files(self, owner=None):
+        if owner:
+            dirs = Directory.objects.filter(opt_parent_dir=self.id, available=True, owner=owner)
+            files = File.objects.filter(parent_dir=self.id, available=True, owner=owner)
+        else:
+            dirs = Directory.objects.filter(opt_parent_dir=self.id, available=True)
+            files = File.objects.filter(parent_dir=self.id, available=True)
+
         return dirs, files
 
-    def get_directory_structure(self):
-        dirs_set, files_set = self._get_dependent_dirs_and_files()
+    def get_directory_structure(self, owner=None):
+        dirs_set, files_set = self._get_dependent_dirs_and_files(owner)
 
         files = [f for f in files_set]
-        dirs = [e for d in dirs_set for e in d.get_directory_structure()]  # unpack nested lists
+        dirs = [e for d in dirs_set for e in d.get_directory_structure(owner)]  # unpack nested lists
         structure = [self]
         if len(files) > 0:
             structure += ['#in#'] + files + ['#out#']
@@ -71,9 +66,13 @@ class Directory(models.Model):
         return structure
 
     @staticmethod
-    def get_entire_structure():
-        parentless = Directory.objects.filter(opt_parent_dir__isnull=True, available=True)
-        return [e for d in parentless for e in d.get_directory_structure()]  # unpack nested lists
+    def get_entire_structure(owner=None):
+        if owner:
+            parentless = Directory.objects.filter(
+                opt_parent_dir__isnull=True, available=True, owner=owner)
+        else:
+            parentless = Directory.objects.filter(opt_parent_dir__isnull=True, available=True)
+        return [e for d in parentless for e in d.get_directory_structure(owner)]  # unpack nested lists
 
     # marks this and depended objects as not available
     def disable(self):
@@ -101,7 +100,7 @@ class File(models.Model):
     parent_dir = models.ForeignKey(Directory, on_delete=models.CASCADE)
     opt_description = models.CharField('optional description', max_length=256, blank=True)
     creation_date = models.DateTimeField('date created', auto_now=True)
-    owner = None  # todo
+    owner = models.ForeignKey(auth_models.User, on_delete=models.RESTRICT)
     available = models.BooleanField(default=True)
 
     @property
@@ -160,7 +159,7 @@ class FileSection(models.Model):
     # a user
     class StatusData(models.Model):
         prover_name = models.CharField(max_length=32, blank=True)
-        user = models.ForeignKey(User, on_delete=models.CASCADE)
+        user = models.ForeignKey(auth_models.User, on_delete=models.RESTRICT)
 
     opt_name = models.CharField('optional name', max_length=256, blank=True)
     opt_description = models.CharField('optional description', max_length=256, blank=True)
