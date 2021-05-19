@@ -80,7 +80,7 @@ body {
     float: left;
 }
 
-.options-bar .dropdown button, .options-bar .dropdown a {
+.options-bar .dropdown button {
     color: var(--text-color);
     background-color: var(--options-bar-color);
     padding: 0.4em;
