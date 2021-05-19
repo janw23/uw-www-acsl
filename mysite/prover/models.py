@@ -12,8 +12,6 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import models as auth_models
 
 
-# TODO Create things and refine them gradually as you learn.
-
 # All the entities have a timestamp and a validity flag. todo
 # The actual model may contain more entities and each of the entities may have more properties.
 

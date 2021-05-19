@@ -88,6 +88,35 @@
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function onFileSelected(pk) {
+        var dots = ['0 o o', 'o 0 o', 'o o 0', 'o o o'];
+        var counter = 0;
+        var interval = setInterval(function () {
+            $('#code-field').html('<p>loading ' + dots[counter % 4] + '</p>');
+            counter++;
+        },
+        200);
+
+        $.ajax({
+            type: 'GET',
+            url: '/prover/ajax/select-file',
+            data: {'pk': pk},
+            success: function (response) {
+                clearInterval(interval);
+                var focus_html = response['focus_html'];
+                var editor_html = response['editor_html'];
+                $('#code-field').html(editor_html);
+                $('#focus-field').html(focus_html);
+            },
+            error: function (response) {
+                clearInterval(interval);
+                console.log(response);
+            }
+        });
+    }
+</script>
 
 </body>
 </html>

@@ -11,4 +11,5 @@ urlpatterns = [
     path('dir-add', views.add_directory, name='dir-add'),
     path('dir-delete', views.delete_dir_or_file, name='dir-delete'),
     path('file-delete', views.delete_dir_or_file, name='file-delete'),
+    path('ajax/select-file', views.ajax_selected_file),
 ]

@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, JsonResponse
 from django import forms
 
 from .forms import DirectoryAddForm, DirectoryDeleteForm
@@ -102,3 +103,25 @@ def delete_dir_or_file(request):
     context = {'directory_structure': Directory.get_entire_structure(request.user),
                'form': form}
     return render(request, 'prover/delete.html', context)
+
+
+# Przyjmuje primary key i zwraca html sekcji focus oraz editor
+def ajax_selected_file(request):
+    if request.is_ajax() and request.method == 'GET':
+        pk = request.GET.get('pk', None)
+        target_file = _get_full_path(File.objects.get(pk=pk).name)
+
+        context = {
+            'directory_structure': Directory.get_entire_structure(),
+            'focus_content': _get_focus_window_content(target_file),
+            'editor_content': _get_editor_window_content(target_file)
+        }
+        rendered_editor = render_to_string('prover/editor.html', context)
+        rendered_focus = render_to_string('prover/focus.html', context)
+
+        return JsonResponse({
+            'editor_html': rendered_editor,
+            'focus_html': rendered_focus},
+            status=200)
+
+    return JsonResponse({}, status=400)

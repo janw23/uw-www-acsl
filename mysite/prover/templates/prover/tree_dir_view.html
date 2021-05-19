@@ -4,7 +4,7 @@
     {% elif elem == '#out#' %}
         </ul>
     {% elif elem.classname == 'File' %}
-        <li><a href="/prover/frama/{{ elem.pk }}">{{ elem.name }}</a></li>
+        <li><a style="cursor: pointer" onclick="onFileSelected({{ elem.pk }})">{{ elem.name }}</a></li>
     {% else %}
         <li>{{ elem.name }}</li>
     {% endif %}
