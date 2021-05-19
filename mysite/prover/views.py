@@ -24,7 +24,7 @@ def _get_focus_window_content(target_file):
         # todo Don't allow on not available files
         return FileSection.parse_from_frama_output(frama.wp_print(target_file))
     else:
-        return [FileSection.Range(['You need to select a file first!'])]
+        return [FileSection.Range([], _name='You need to select a file first!')]
 
 
 def _get_editor_window_content(target_file):

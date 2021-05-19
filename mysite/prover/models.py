@@ -200,21 +200,21 @@ class FileSection(models.Model):
 
     @staticmethod
     def _all_valid(parsed):
-        return all(map(lambda x: x.status == 'Valid', parsed))
+        return all(map(lambda x: x == '#out#' or x.status == 'Valid', parsed))
 
     @staticmethod
     def _parse_procedure(procedure_name, combined):
         # parse subsections
-        # create overal status based on subsection statuses
+        # create overall status based on subsection statuses
         parsed = []
         for sub in re.finditer('(.*?)\n-{60}', combined, re.DOTALL):
-            parsed.append(FileSection._parse_procedure_subsection(sub.group(1)))
+            parsed += [FileSection._parse_procedure_subsection(sub.group(1))]
 
         parent = FileSection.Range(
-            [procedure_name],
+            [],
             'Valid' if FileSection._all_valid(parsed) else 'Invalid',
             procedure_name)
-        return [parent] + parsed
+        return [parent, '#in#'] + parsed + ['#out#']
 
     @staticmethod
     def _parse_remaining(remaining_lines):

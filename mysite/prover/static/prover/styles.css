@@ -48,6 +48,48 @@
     opacity: inherit;
 }
 
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+    background-color: darkred;
+    color: inherit;
+    font-size: medium;
+    cursor: pointer;
+    padding: 0.5em;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.2s;
+}
+
+.panel .accordion {
+    filter: brightness(80%);
+}
+
+.accordion.Valid {
+    background-color: darkgreen;
+}
+
+.accordion.N_A {
+    background-color: #4d6d9b;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+    filter: brightness(150%);
+}
+
+.panel .active {
+    filter: brightness(110%);
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+    flex: none;
+    display: none;
+    overflow: hidden;
+}
+
 body {
     display: flex;
     overflow: hidden;
