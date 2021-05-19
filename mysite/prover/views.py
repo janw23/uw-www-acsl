@@ -48,7 +48,7 @@ def index(request, frama_target_pk=None):
         'directory_structure': Directory.get_entire_structure(request.user),
         'focus_content': _get_focus_window_content(target_file),
         'editor_content': _get_editor_window_content(target_file),
-        'user' : request.user,
+        'user': request.user,
     }
     return render(request, 'prover/index.html', context)
 

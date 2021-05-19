@@ -56,7 +56,8 @@ class Directory(models.Model):
         dirs_set, files_set = self._get_dependent_dirs_and_files(owner)
 
         files = [f for f in files_set]
-        dirs = [e for d in dirs_set for e in d.get_directory_structure(owner)]  # unpack nested lists
+        dirs = [e for d in dirs_set for e in
+                d.get_directory_structure(owner)]  # unpack nested lists
         structure = [self]
         if len(files) > 0:
             structure += ['#in#'] + files + ['#out#']
@@ -72,7 +73,8 @@ class Directory(models.Model):
                 opt_parent_dir__isnull=True, available=True, owner=owner)
         else:
             parentless = Directory.objects.filter(opt_parent_dir__isnull=True, available=True)
-        return [e for d in parentless for e in d.get_directory_structure(owner)]  # unpack nested lists
+        return [e for d in parentless for e in
+                d.get_directory_structure(owner)]  # unpack nested lists
 
     # marks this and depended objects as not available
     def disable(self):
@@ -169,9 +171,10 @@ class FileSection(models.Model):
     status_data = StatusData()  # todo Is the current impl ok?
 
     class Range:
-        def __init__(self, _lines=None, _status=None):
+        def __init__(self, _lines=None, _status=None, _name=None):
             self.lines = _lines
             self.status = _status
+            self.name = _name
 
         @property
         def classname(self):
@@ -192,7 +195,13 @@ class FileSection(models.Model):
     def _parse_procedure_subsection(combined):
         match = re.match(R'.*Prover (.*) returns (.*?)(( .*)|$)', combined, re.DOTALL)
         status = match.group(2) if match else None
-        return FileSection.Range(combined.split('\n'), status)
+        return FileSection.Range(
+            list(filter(None, combined.split('\n'))),
+            status, 'TEMPORARY SUBSECTION NAME')
+
+    @staticmethod
+    def _all_valid(parsed):
+        return all(map(lambda x: x.status == 'Valid', parsed))
 
     @staticmethod
     def _parse_procedure(procedure_name, combined):
@@ -200,10 +209,13 @@ class FileSection(models.Model):
         # create overal status based on subsection statuses
         parsed = []
         for sub in re.finditer('(.*?)\n-{60}', combined, re.DOTALL):
-            parsed += [FileSection._parse_procedure_subsection(sub.group(1))]
+            parsed.append(FileSection._parse_procedure_subsection(sub.group(1)))
 
-        parent = FileSection.Range([procedure_name])
-        return [parent, '#in#'] + parsed + ['#out#']
+        parent = FileSection.Range(
+            [procedure_name],
+            'Valid' if FileSection._all_valid(parsed) else 'Invalid',
+            procedure_name)
+        return [parent] + parsed
 
     @staticmethod
     def _parse_remaining(remaining_lines):
@@ -226,7 +238,6 @@ class FileSection(models.Model):
         index = FileSection._first_occurrence_index('^-+$', lines)
 
         remaining = FileSection._parse_remaining(lines[index:])
-        overview = FileSection.Range(lines[:index], 'N_A')
+        overview = FileSection.Range(lines[:index], 'N_A', 'overview')
 
-        return [overview, '#in#'] + remaining + ['#out#']
-        # todo Zwraca listę [element #in# dzieci #out#]
+        return [overview] + remaining
