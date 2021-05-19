@@ -105,10 +105,8 @@
             data: {'pk': pk},
             success: function (response) {
                 clearInterval(interval);
-                var focus_html = response['focus_html'];
-                var editor_html = response['editor_html'];
-                $('#code-field').html(editor_html);
-                $('#focus-field').html(focus_html);
+                $('#code-field').html(response['editor_html']);
+                $('#focus-field').html(response['focus_html']);
             },
             error: function (response) {
                 clearInterval(interval);
