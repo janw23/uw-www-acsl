@@ -195,9 +195,8 @@ class FileSection(models.Model):
     def _parse_procedure_subsection(combined):
         match = re.match(R'.*Prover (.*) returns (.*?)(( .*)|$)', combined, re.DOTALL)
         status = match.group(2) if match else None
-        return FileSection.Range(
-            list(filter(None, combined.split('\n'))),
-            status, 'TEMPORARY SUBSECTION NAME')
+        split = list(filter(None, combined.split('\n')))
+        return FileSection.Range(split, status, split[0])
 
     @staticmethod
     def _all_valid(parsed):
