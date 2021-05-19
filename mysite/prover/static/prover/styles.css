@@ -35,6 +35,19 @@
     --scrollbar-color-handle-hover: #718d0a;
 }
 
+.frama {
+    background: rgba(128, 0, 0, 0.3)
+}
+
+.frama.Valid {
+    background: rgba(0, 128, 0, 0.3)
+}
+
+.frama.N_A {
+    background-color: inherit;
+    opacity: inherit;
+}
+
 body {
     display: flex;
     overflow: hidden;

@@ -166,9 +166,17 @@ class FileSection(models.Model):
     opt_description = models.CharField('optional description', max_length=256, blank=True)
     creation_date = models.DateTimeField('date created')
     section_category = models.CharField(max_length=4, choices=SectionCategory.choices)
-    lines = None
     status = models.CharField(max_length=2, choices=SectionStatus.choices)
     status_data = StatusData()  # todo Is the current impl ok?
+
+    class Range:
+        def __init__(self, _lines=None, _status=None):
+            self.lines = _lines
+            self.status = _status
+
+        @property
+        def classname(self):
+            return self.__class__.__name__
 
     @staticmethod
     def _first_occurrence_index(pattern, lines):
@@ -182,8 +190,36 @@ class FileSection(models.Model):
     # rezultatów.
 
     @staticmethod
+    def _parse_procedure_subsection(combined):
+        match = re.match(R'.*Prover (.*) returns (.*?)(( .*)|$)', combined, re.DOTALL)
+        status = match.group(2) if match else None
+        print(status)
+        return FileSection.Range(combined.split('\n'), status)
+
+    @staticmethod
+    def _parse_procedure(procedure_name, combined):
+        # parse subsections
+        # create overal status based on subsection statuses
+        parsed = []
+        for sub in re.finditer('(.*?)\n-{60}', combined, re.DOTALL):
+            parsed += [FileSection._parse_procedure_subsection(sub.group(1))]
+
+        parent = FileSection.Range([procedure_name])
+        return [parent, '#in#'] + parsed + ['#out#']
+
+    @staticmethod
     def _parse_remaining(remaining_lines):
-        return []
+        combined = '\n'.join(remaining_lines)
+        pattern = '-{60}\n.*(Function .+)\n-{60}'
+        split = re.split(pattern, combined)
+
+        parsed = []
+        for index, elem in enumerate(split):
+            if re.match(R'^\s*Function.*', elem):
+                procedure_content = split[index + 1] if index < len(split) else None
+                parsed += FileSection._parse_procedure(elem, procedure_content)
+
+        return parsed
 
     @staticmethod
     def parse_from_frama_output(frama_output):
@@ -191,11 +227,8 @@ class FileSection(models.Model):
         lines = frama_output.split('\n')
         index = FileSection._first_occurrence_index('^-+$', lines)
 
-        overview_lines = lines[:index]
-        remaining_lines = lines[index:]
+        remaining = FileSection._parse_remaining(lines[index:])
+        overview = FileSection.Range(lines[:index], 'N_A')
 
-        overview_section = FileSection()
-        overview_section.section_category = FileSection.SectionCategory.PROCEDURE
-        overview_section.lines = overview_lines
-        return overview_section, FileSection._parse_remaining(remaining_lines)
-        # todo Zwraca (sekcja, lista dzieci, która tej samej postaci)
+        return [overview, '#in#'] + remaining + ['#out#']
+        # todo Zwraca listę [element #in# dzieci #out#]

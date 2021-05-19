@@ -1,3 +1,13 @@
-{% for line in focus_content[0].lines %}
-    <br>{{ line }}
+{% for elem in focus_content %}
+    {% if elem == '#in#' %}
+    {% elif elem == '#out#' %}
+    {% elif elem.classname == 'Range' %}
+        <div class="frama {{ elem.status }}">
+        {% for line in elem.lines %}
+            <br>{{ line }}
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>xd</p>
+    {% endif %}
 {% endfor %}
