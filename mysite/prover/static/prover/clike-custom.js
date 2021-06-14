@@ -71,13 +71,16 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       // should be treated as a builtin.
       isReservedIdentifier = parserConfig.isReservedIdentifier || false;
 
-  var curPunc, isDefKeyword, acsl = false;
+  var curPunc, isDefKeyword, acslMultiline = false,  acslSingleline = false;
 
   function tokenBase(stream, state) {
     var ch = stream.next();
     if (hooks[ch]) {
       var result = hooks[ch](stream, state);
       if (result !== false) return result;
+    }
+    if (acslSingleline && stream.startOfLine) {
+      acslSingleline = false;
     }
     if (ch == '"' || ch == "'") {
       state.tokenize = tokenString(ch);
@@ -92,20 +95,24 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       curPunc = ch;
       return null;
     }
-    if (acsl && ch == '*' && stream.eat('/')) {
-      acsl = false;
+    if (acslMultiline && ch == '*' && stream.eat('/')) {
+      acslMultiline = false;
       return null;
     }
     if (ch == "/") {
       if (stream.eat("*")) {
         if (stream.eat("@")) {
-          acsl = true;
+          acslMultiline = true;
           return null;
         }
         state.tokenize = tokenComment;
         return tokenComment(stream, state);
       }
       if (stream.eat("/")) {
+        if (stream.eat("@")) {
+          acslSingleline = true;
+          return null;
+        }
         stream.skipToEnd();
         return "comment";
       }
@@ -119,7 +126,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       stream.eatWhile(isIdentifierChar);
 
     var cur = stream.current();
-    if (contains(keywords, cur) || (acsl && contains(acslKeywords, cur))) {
+    if (contains(keywords, cur) || ((acslMultiline || acslSingleline) && contains(acslKeywords, cur))) {
       if (contains(blockKeywords, cur)) curPunc = "newstatement";
       if (contains(defKeywords, cur)) isDefKeyword = true;
       return "keyword";
@@ -133,7 +140,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     if (contains(atoms, cur)) return "atom";
     return "variable";
   }
-  // todo Code higlighting in //@ comments
+
   function tokenString(quote) {
     return function(stream, state) {
       var escaped = false, next, end = false;
