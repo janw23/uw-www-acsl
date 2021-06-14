@@ -59,6 +59,7 @@
     border: none;
     outline: none;
     transition: 0.2s;
+    width: 100%;
 }
 
 .panel .accordion {

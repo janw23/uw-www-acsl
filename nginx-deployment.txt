@@ -1,0 +1,44 @@
+== Instrukcja do deploymentu do zadania 4 na students ==
+
+1. Na początek pobieramy i budujemy nginx:
+
+wget http://nginx.org/download/nginx-1.19.10.tar.gz
+tar -xvf nginx-1.19.10.tar.gz
+cd nginx-1.19.10/
+./configure --prefix=$HOME/nginx
+make -j12
+make install
+cd .. && rm -rf nginx-1.19.10/ nginx-1.19.10.tar.gz
+
+
+2. Pobieramy moją konfigurację: 
+
+curl -s https://pastebin.com/raw/gB5AGK14 | NGINX_PORT=1234 envsubst > ~/nginx/conf/nginx.conf
+
+gdzie 1234 należy zamienić na wybrany przez siebie port (na niego będzie się wchodziło w przeglądarce).
+
+
+3. Następnie w swojej aplikacji Django ustawiamy następujące opcje w pliku settings.py:
+
+DEBUG = False
+STATIC_ROOT = Path.home() / "nginx" / "static"
+ALLOWED_HOSTS = ['students.mimuw.edu.pl', 'localhost', '127.0.0.1']
+
+Prawdopodobnie chcesz zamienić DEBUG = True na te 3 linijki.
+
+
+5. Następnie wykonujemy polecenia w katalogu z Django:
+
+python3 manage.py collectstatic
+pip3 install uwsgi
+
+
+6. Startujemy nginxa
+cd ~/nginx
+./sbin/nginx
+
+
+7. Startujemy aplikacje Django (w katalogu ze swoja apliakcja):
+uwsgi --socket ~/nginx/django.sock --module APPNAME.wsgi
+
+gdzie APPNANE należy zastąpić nazwą katalogu w którym znajduje się plik settings.py.
