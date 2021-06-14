@@ -1,7 +1,34 @@
-<code>
-{% for line in editor_content %}
-<pre>
-{{ line }}
-</pre>
-{% endfor %}
-</code>
+{%  load static %}
+
+<textarea id="code-area">
+You need to select a file first!
+</textarea>
+
+<script src="{%  static 'codemirror/lib/codemirror.js' %}"></script>
+<link rel="stylesheet" href="{%  static 'codemirror/lib/codemirror.css' %}">
+<script src="{%  static 'codemirror/mode/clike/clike.js' %}"></script>
+<link rel="stylesheet" href="{% static 'codemirror/theme/paraiso-dark.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror/theme/cobalt.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror/theme/abbott.css' %}">
+<script>
+    var themeNumber = parseInt(getComputedStyle(document.body).getPropertyValue('--theme-number'));
+    var codeThemes = ['cobalt', 'paraiso-dark', 'abbott'];
+
+    var cm = CodeMirror.fromTextArea(document.getElementById("code-area"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/x-csrc",
+        readOnly: true,
+        styleActiveLine: true,
+        theme: codeThemes[themeNumber],
+    });
+    cm.setSize("100%", "100%");
+
+    var lines = [];
+    {% autoescape off %}
+    {% for line in editor_content %}
+        lines.push(String.raw`{{ line }}`);
+    {% endfor %}
+    {% endautoescape %}
+    cm.setValue(lines.join('\n'));
+</script>

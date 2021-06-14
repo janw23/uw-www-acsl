@@ -3,6 +3,7 @@
 }
 
 .theme--dark-blue {
+    --theme-number: 0;
     --text-color: #d3d9e0;
     --options-bar-color: #263854;
     --options-bar-color-hover: #1c293e;
@@ -14,6 +15,7 @@
 }
 
 .theme--purple {
+    --theme-number: 1;
     --text-color: #ffeb98;
     --options-bar-color: #671551;
     --options-bar-color-hover: #531141;
@@ -25,6 +27,7 @@
 }
 
 .theme--jool {
+    --theme-number: 2;
     --text-color: #f9efff;
     --options-bar-color: #5b7207;
     --options-bar-color-hover: #445408;
@@ -186,8 +189,8 @@ body {
 #code-field {
     flex: 4;
     background: var(--code-window-color);
-    overflow: auto;
-    padding: 0.5em;
+    overflow: hidden;
+    padding: 0;
 }
 
 #focus-field {

@@ -1,7 +1,8 @@
 # Project-specific
 experiments/
 .idea/
-
+codemirror-5.61.1/
+mysite/prover/static/codemirror
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
